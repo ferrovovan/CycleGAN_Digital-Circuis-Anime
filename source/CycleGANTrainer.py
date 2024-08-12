@@ -4,10 +4,17 @@ import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 
 import os
-from globals import *
+
+from Generator import Generator
+from Discriminator import Discriminator
+
 
 class CycleGANTrainer:
-	def __init__(self, gen_A2B, gen_B2A, disc_A, disc_B, optimizer_G, optimizer_D_A, optimizer_D_B, criterion_GAN, criterion_cycle):
+	def __init__(self, gen_A2B: Generator, gen_B2A: Generator,
+			disc_A: Discriminator, disc_B: Discriminator,
+			optimizer_G, optimizer_D_A, optimizer_D_B, criterion_GAN, criterion_cycle,
+			save_path: str
+		):
 		self.gen_A2B = gen_A2B
 		self.gen_B2A = gen_B2A
 		self.disc_A = disc_A
@@ -17,6 +24,7 @@ class CycleGANTrainer:
 		self.optimizer_D_B = optimizer_D_B
 		self.criterion_GAN = criterion_GAN
 		self.criterion_cycle = criterion_cycle
+		self.save_path = save_path
 
 	def train_step(self, real_A, real_B):
 		lambda_cycle = 10
@@ -108,35 +116,13 @@ class CycleGANTrainer:
 
 		plt.show()
 
-	def save_models(self, path='saved_models/'):
-		# Добавьте код для сохранения весов моделей и оптимизаторов
-		torch.save(self.gen_A2B.state_dict(), path + 'gen_A2B.pth')
-		torch.save(self.gen_B2A.state_dict(), path + 'gen_B2A.pth')
-		torch.save(self.disc_A.state_dict(), path + 'disc_A.pth')
-		torch.save(self.disc_B.state_dict(), path + 'disc_B.pth')
-		torch.save(self.optimizer_G.state_dict(), path + 'optimizer_G.pth')
-		torch.save(self.optimizer_D_A.state_dict(), path + 'optimizer_D_A.pth')
-		torch.save(self.optimizer_D_B.state_dict(), path + 'optimizer_D_B.pth')
+	def save_models(self):
+		torch.save(self.gen_A2B.state_dict(), self.save_path + 'gen_A2B.pth')
+		torch.save(self.gen_B2A.state_dict(), self.save_path + 'gen_B2A.pth')
+		torch.save(self.disc_A.state_dict(), self.save_path + 'disc_A.pth')
+		torch.save(self.disc_B.state_dict(), self.save_path + 'disc_B.pth')
 
+		torch.save(self.optimizer_G.state_dict(), self.save_path + 'optimizer_G.pth')
+		torch.save(self.optimizer_D_A.state_dict(), self.save_path + 'optimizer_D_A.pth')
+		torch.save(self.optimizer_D_B.state_dict(), self.save_path + 'optimizer_D_B.pth')
 
-# Пример ImageDataset
-from torch.utils.data import Dataset
-from PIL import Image
-
-class ImageDataset(Dataset):
-    def __init__(self, root_dir, transform=None):
-        self.root_dir = root_dir
-        self.transform = transform
-        self.image_list = [f for f in os.listdir(root_dir) if os.path.isfile(os.path.join(root_dir, f))]
-
-    def __len__(self):
-        return len(self.image_list)
-
-    def __getitem__(self, idx):
-        img_name = os.path.join(self.root_dir, self.image_list[idx])
-        image = Image.open(img_name)
-
-        if self.transform:
-            image = self.transform(image)
-
-        return image
