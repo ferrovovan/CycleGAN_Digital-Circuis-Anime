@@ -1,9 +1,6 @@
 import torch
-import torch.nn.functional as F
-import torchvision.transforms as transforms
+from torchvision.transforms.functional import to_pil_image
 import matplotlib.pyplot as plt
-
-import os
 
 from Generator import Generator
 from Discriminator import Discriminator
@@ -90,10 +87,10 @@ class CycleGANTrainer:
 		self.gen_B2A.train()
 
 		# Преобразовать тензоры в изображенияч
-		real_A_img = transforms.functional.to_pil_image(real_A[0].cpu())
-		real_B_img = transforms.functional.to_pil_image(real_B[0].cpu())
-		fake_A_img = transforms.functional.to_pil_image(fake_A[0].cpu())
-		fake_B_img = transforms.functional.to_pil_image(fake_B[0].cpu())
+		real_A_img = to_pil_image(real_A[0].cpu())
+		real_B_img = to_pil_image(real_B[0].cpu())
+		fake_A_img = to_pil_image(fake_A[0].cpu())
+		fake_B_img = to_pil_image(fake_B[0].cpu())
 
 		# Отобразить изображения
 		fig, axes = plt.subplots(2, 2, figsize=(8, 8))
