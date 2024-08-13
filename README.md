@@ -2,12 +2,17 @@
   
 #### Клонирование репозитория:  
 ```
-git clone --depth 1 git@github.com:ferrovovan/Digital-Circuis-Anime-CycleGAN.git
-cd Digital-Circuis-Anime-CycleGAN
+git clone --depth 1 git@github.com:ferrovovan/CycleGAN_Digital-Circuis-Anime.git
+cd CycleGAN_Digital-Circuis-Anime
 ```
 
-## Почему не работает  
-- Какие слои в Генераторе?
-- Какие слои в Дискриминаторе?
-- Зачем нужны Оптимизаторы, какие параметры им ставить?
-- Какую Функцию Потерь поставить?
+## Что есть
+- Классы Генератора и Дискриминатора
+- Процедура обучения, через CycleGANTrainer
+- Взаимодействие с датасетом, через ImageDataset
+- Простая Аугументация
+
+## Чего не хватает
+- Наполнения Генератора и Дискриминатора
+- Выбор Оптимизаторов, Функций Потерь
+- Понимания соотношения параметров к предполагаемым итогам
